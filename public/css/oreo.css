@@ -1,0 +1,12 @@
+.header{
+    background-color: #54beff;
+}
+
+.logo-img{
+    margin-top: 3rem;
+    margin-bottom: 3rem;
+}
+
+::selection {
+    background-color: #54beff;
+  }
