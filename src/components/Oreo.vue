@@ -106,7 +106,7 @@ watchEffect(async () => {
   
   try {
     const url = `${API_URL}${entry.value}`
-    data.value = { payload: '⌛ Je pensel...' }
+    data.value = { payload: '⌛ Je pense ...' }
     
     const response = await fetch(url)
     if (!response.ok) {
@@ -121,7 +121,7 @@ watchEffect(async () => {
     }
   } catch (error) {
     console.error('Error:', error)
-    data.value = { payload: '❌ Une erreur est survenue' }
+    data.value = { payload: '❌ Une erreur est survenue (surement entre le clavier et la chaise)' }
   } finally {
     loading.value = false
   }
@@ -134,21 +134,21 @@ watchEffect(async () => {
   <div class="container">
     <div class="data">
       <div class="form-floating">
+        <input 
+          class="form-control form-control-lg" 
+          id="entry" 
+          v-model="entry"
+          placeholder="ex : FC-202P30KT4P55H2XGXXXXSXXXXAXBXCXXXXDX ou 131F6650" 
+        />
+        <label for="entry">Entrez le LN ou PN</label>
+        <input 
+          v-if="seen" 
+          class="form-control form-control-lg mt-2" 
+          id="pn" 
+          v-model="pn" 
+        />
+      </div>
 
-      <input 
-        class="form-control form-control-lg" 
-        id="entry" 
-        v-model="entry"
-        placeholder="ex : FC-202P30KT4P55H2XGXXXXSXXXXAXBXCXXXXDX ou 131F6650" 
-      />
-      <label for="entry">Entrez le LN ou PN</label>
-      <input 
-        v-if="seen" 
-        class="form-control form-control-lg mt-2" 
-        id="pn" 
-        v-model="pn" 
-      />
-    </div>
       <div class="input-group mt-3 form-floating">
         <textarea 
           class="form-control form-control-lg"
@@ -156,8 +156,9 @@ watchEffect(async () => {
           id="designation" 
           v-model="data.payload"
           readonly
+          style="height: 4.5em"
         ></textarea>
-      <label for="designation">Désignation</label>
+        <label for="designation">Désignation</label>
         <button 
           v-if="data.payload" 
           class="btn btn-outline-secondary" 
@@ -174,9 +175,10 @@ watchEffect(async () => {
       <div class="list-group">
         <a
           href="#" 
-          v-for="(item, index) in items" 
-          :key="index"
+          v-for="item in items" 
+          :key="item"
           class="list-group-item list-group-item-action"
+          @click.prevent="entry = item"
         >
           {{ item }}
         </a>
