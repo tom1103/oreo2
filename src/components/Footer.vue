@@ -1,22 +1,5 @@
 <script setup>
-import { ref, watchEffect } from 'vue'
-
-const citation = ref('')
-const API_URL = 'https://kaamelott.chaudie.re/api/random/'
-
-watchEffect(async () => {
-  try {
-    const response = await fetch(API_URL)
-    if (!response.ok) {
-      throw new Error('Network response was not ok')
-    }
-    const result = await response.json()
-    citation.value = result.citation
-  } catch (error) {
-    citation.value = 'Erreur de chargement de la citation.'
-    console.log('Error:', error)
-  }
-})
+import { ref } from 'vue'
 </script>
 
 <template>
@@ -30,7 +13,6 @@ watchEffect(async () => {
             d="M4 1c2.21 0 4 1.755 4 3.92C8 2.755 9.79 1 12 1s4 1.755 4 3.92c0 3.263-3.234 4.414-7.608 9.608a.513.513 0 0 1-.784 0C3.234 9.334 0 8.183 0 4.92 0 2.755 1.79 1 4 1z" />
         </svg>
       </span>
-      {{ citation }}
     </div>
   </nav>
 </template>
