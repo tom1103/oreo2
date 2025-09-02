@@ -6,7 +6,7 @@ const header = ref('header-default')
 
 function toggleHeader() {
     nbClick.value++
-  if (nbClick.value % 10 === 0 && nbClick.value !== 0) {
+  if (nbClick.value % parseInt('A', 20) === 0 && nbClick.value !== 0) {
     header.value = header.value === 'header-default' ? 'header-alternate' : 'header-default'
   }
 }
