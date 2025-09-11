@@ -18,7 +18,7 @@ function toggleHeader() {
     <div class="container">
       <div class="row justify-content-center">
         <div @click="toggleHeader" class="col-4 logo-container">
-          <img src="../../img/oreo1.svg" alt="Logo Oréo" />
+          <img src="../../public/img/oreo1.min.svg" alt="Logo Oréo" />
           <span class="badge text-bg-secondary">{{nbClick}}</span>
         </div>
     </div>
