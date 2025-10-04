@@ -1,7 +1,11 @@
 <script setup>
-import Oreo from './components/Oreo.vue'
+import OreoForm from './components/OreoForm.vue';
+import PageFooter from './components/PageFooter.vue';
+import TopLogo from './components/TopLogo.vue';
 </script>
 
 <template>
-  <Oreo />
+  <TopLogo />
+  <OreoForm />
+  <PageFooter />
 </template>
