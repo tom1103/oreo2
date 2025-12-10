@@ -21,6 +21,6 @@ export default defineConfig([
   },
 
   js.configs.recommended,
-  pluginVue.configs['flat/vue3-recommended'],
+  ...pluginVue.configs['flat/essential'],
   skipFormatting,
 ])
