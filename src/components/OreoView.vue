@@ -1,7 +1,7 @@
 <script setup>
-import { computed, ref, watchEffect } from 'vue'
-import Logo from './Logo.vue'
-import Footer from './Footer.vue'
+import { ref, watchEffect } from 'vue'
+import Logo from './LogoOreo.vue'
+import Footer from './FooterView.vue'
 
 // Constants
 const API_URL = 'https://8rkbcyrzde.execute-api.eu-west-1.amazonaws.com/api/'
@@ -63,7 +63,7 @@ function addToHistory(entry) {
   // Update the reactive reference if entry is not already in the list
   if (!items.value.includes(entry)) {
     items.value = [entry, ...items.value.slice(0, MAX_HISTORY - 1)]
-    
+
     try {
       // Save updated list to localStorage
       localStorage.setItem('lastEntries', JSON.stringify(items.value))
@@ -76,7 +76,7 @@ function addToHistory(entry) {
 // Improved clipboard function
 function updateClipboard(newClip) {
   if (!newClip) return
-  
+
   navigator.clipboard.writeText(newClip)
     .then(() => {
       copier.value = 'Copié !'
@@ -103,19 +103,19 @@ watchEffect(async () => {
 
   entry.value = entry.value.toUpperCase()
   loading.value = true
-  
+
   try {
     const url = `${API_URL}${entry.value}`
     data.value = { payload: '⌛ Je pense ...' }
-    
+
     const response = await fetch(url)
     if (!response.ok) {
       throw new Error('Network response was not ok')
     }
-    
+
     const result = await response.json()
     data.value = result
-    
+
     if (result.payload) {
       addToHistory(entry.value)
     }
@@ -134,35 +134,35 @@ watchEffect(async () => {
   <div class="container">
     <div class="data">
       <div class="form-floating">
-        <input 
-          class="form-control form-control-lg" 
-          id="entry" 
+        <input
+          class="form-control form-control-lg"
+          id="entry"
           v-model="entry"
-          placeholder="ex : FC-202P30KT4P55H2XGXXXXSXXXXAXBXCXXXXDX ou 131F6650" 
+          placeholder="ex : FC-202P30KT4P55H2XGXXXXSXXXXAXBXCXXXXDX ou 131F6650"
         />
         <label for="entry">Entrez le LN ou PN</label>
-        <input 
-          v-if="seen" 
-          class="form-control form-control-lg mt-2" 
-          id="pn" 
-          v-model="pn" 
+        <input
+          v-if="seen"
+          class="form-control form-control-lg mt-2"
+          id="pn"
+          v-model="pn"
         />
       </div>
 
       <div class="input-group mt-3 form-floating">
-        <textarea 
+        <textarea
           class="form-control form-control-lg"
           placeholder="Vas-y, tapes quelques choses au-dessus ..."
-          id="designation" 
+          id="designation"
           v-model="data.payload"
           readonly
           style="height: 4.5em"
         ></textarea>
         <label for="designation">Désignation</label>
-        <button 
-          v-if="data.payload" 
-          class="btn btn-outline-secondary" 
-          type="button" 
+        <button
+          v-if="data.payload"
+          class="btn btn-outline-secondary"
+          type="button"
           @click="updateClipboard(data.payload)"
         >
           {{ copier }}
@@ -174,8 +174,8 @@ watchEffect(async () => {
       <h5>Derniers codes entrés :</h5>
       <div class="list-group">
         <a
-          href="#" 
-          v-for="item in items" 
+          href="#"
+          v-for="item in items"
           :key="item"
           class="list-group-item list-group-item-action"
           @click.prevent="entry = item"

@@ -51,7 +51,7 @@ function toggleHeader() {
   transform: translate(-50%, -50%);
   width: 120%;
   height: 120%;
-  background: radial-gradient(circle, 
+  background: radial-gradient(circle,
     rgba(135, 206, 235, 0.4) 0%,
     rgba(173, 216, 230, 0.2) 40%,
     rgba(255, 255, 255, 0) 70%
