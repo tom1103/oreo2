@@ -1,7 +1,6 @@
 <template>
     <vue-particles
         id="tsparticles"
-        :particlesInit="particlesInit"
         :particlesLoaded="particlesLoaded"
         :options="options"
     />
@@ -9,11 +8,6 @@
 
 <script setup>
 import { ref } from 'vue'
-import { loadSlim } from '@tsparticles/slim'
-
-const particlesInit = async (engine) => {
-    await loadSlim(engine)
-}
 
 const particlesLoaded = (container) => {
     console.log('Particles container loaded', container)
