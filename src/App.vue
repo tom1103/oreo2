@@ -11,7 +11,7 @@ onMounted(() => {
     const day = today.getDate()
 
     // Christmas period: from December 1 to February 15
-    const isWinter = (month === 12 && day >= 1) || month === 1 || (month === 2 && day <= 15)
+    const isWinter = (month === 12 && day >= 16) || month === 1 || (month === 3 && day <= 5)
 
     if (isWinter) {
         showSnow.value = true
