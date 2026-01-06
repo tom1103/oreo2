@@ -104,7 +104,7 @@ watchEffect(async () => {
         return
     }
 
-    entry.value = entry.value.toUpperCase()
+    entry.value = entry.value.replace(/\s/g, '').toUpperCase()
     loading.value = true
 
     try {
