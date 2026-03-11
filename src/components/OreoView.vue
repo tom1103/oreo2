@@ -2,6 +2,7 @@
 import { ref, watchEffect } from 'vue'
 import Logo from './LogoOreo.vue'
 import Footer from './FooterView.vue'
+import { storageAvailable } from '@/utils/storage'
 
 // Constants
 const API_URL = 'https://8rkbcyrzde.execute-api.eu-west-1.amazonaws.com/api/'
@@ -26,31 +27,6 @@ const seen = ref(false)
 const items = ref(savedItems)
 const copier = ref('Copier')
 const loading = ref(false)
-
-function storageAvailable(type) {
-    try {
-        var storage = window[type],
-            x = '__storage_test__'
-        storage.setItem(x, x)
-        storage.removeItem(x)
-        return true
-    } catch (e) {
-        return (
-            e instanceof DOMException &&
-            // everything except Firefox
-            (e.code === 22 ||
-                // Firefox
-                e.code === 1014 ||
-                // test name field too, because code might not be present
-                // everything except Firefox
-                e.name === 'QuotaExceededError' ||
-                // Firefox
-                e.name === 'NS_ERROR_DOM_QUOTA_REACHED') &&
-            // acknowledge QuotaExceededError only if there's something already stored
-            storage.length !== 0
-        )
-    }
-}
 
 // Add to history function
 function addToHistory(entry) {
