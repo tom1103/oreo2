@@ -108,7 +108,7 @@ watchEffect(async () => {
     loading.value = true
 
     try {
-        const url = `${API_URL}${entry.value}`
+        const url = `${API_URL}${encodeURIComponent(entry.value)}`
         data.value = { payload: '⌛ Je pense ...' }
 
         const response = await fetch(url)
