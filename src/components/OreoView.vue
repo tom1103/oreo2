@@ -1,8 +1,9 @@
 <script setup>
-import { ref, watchEffect } from 'vue'
+import { ref, watch } from 'vue'
 import Logo from './LogoOreo.vue'
 import Footer from './FooterView.vue'
 import { storageAvailable } from '@/utils/storage'
+import { debounce } from '@/utils/debounce'
 
 // Constants
 const API_URL = 'https://8rkbcyrzde.execute-api.eu-west-1.amazonaws.com/api/'
@@ -66,27 +67,10 @@ function updateClipboard(newClip) {
         })
 }
 
-// Optimized watchEffect
-watchEffect(async () => {
-    if (!entry.value) {
-        data.value = { payload: '' }
-        loading.value = false
-        return
-    }
-
-    if (entry.value.length < 8) {
-        data.value = { payload: 'Il manque des caractères ...' }
-        loading.value = false
-        return
-    }
-
-    entry.value = entry.value.replace(/\s/g, '').toUpperCase()
-    loading.value = true
-
+// Debounced API call
+const debouncedFetch = debounce(async (searchValue) => {
     try {
-        const url = `${API_URL}${encodeURIComponent(entry.value)}`
-        data.value = { payload: '⌛ Je pense ...' }
-
+        const url = `${API_URL}${encodeURIComponent(searchValue)}`
         const response = await fetch(url)
         if (!response.ok) {
             throw new Error('Network response was not ok')
@@ -96,7 +80,7 @@ watchEffect(async () => {
         data.value = result
 
         if (result.payload) {
-            addToHistory(entry.value)
+            addToHistory(searchValue)
         }
     } catch (error) {
         console.error('Error:', error)
@@ -106,7 +90,40 @@ watchEffect(async () => {
     } finally {
         loading.value = false
     }
-})
+}, 500)
+
+// Watcher for entry changes
+watch(
+    entry,
+    (newVal) => {
+        if (!newVal) {
+            debouncedFetch.cancel()
+            data.value = { payload: '' }
+            loading.value = false
+            return
+        }
+
+        if (newVal.length < 8) {
+            debouncedFetch.cancel()
+            data.value = { payload: 'Il manque des caractères ...' }
+            loading.value = false
+            return
+        }
+
+        // Normalize entry: remove spaces and uppercase
+        const normalized = newVal.replace(/\s/g, '').toUpperCase()
+        if (normalized !== newVal) {
+            entry.value = normalized
+            return
+        }
+
+        loading.value = true
+        data.value = { payload: '⌛ Je pense ...' }
+
+        debouncedFetch(normalized)
+    },
+    { immediate: true },
+)
 </script>
 
 <template>
