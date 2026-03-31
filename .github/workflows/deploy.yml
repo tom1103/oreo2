@@ -3,22 +3,33 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches:
-      - main  # Le déploiement se déclenche quand on push sur main
+      - main  # Déclenche le build à chaque push sur la branche main
+
+permissions:
+  contents: write # Autorise l'action à créer la branche gh-pages et à y pousser du code
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout 🛎️
         uses: actions/checkout@v4
 
-      - name: Install and Build 🔧
-        run: |
-          npm install
-          npm run build
+      - name: Setup Node.js ⚙️
+        uses: actions/setup-node@v4
+        with:
+          node-version: 'lts' # Version récente de Node
+          cache: 'npm'       # Accélère les prochains builds en mettant en cache les modules
+
+      - name: Install dependencies 🔧
+        run: npm install
+
+      - name: Build project 🏗️
+        run: npm run build
 
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@v4
         with:
-          folder: dist # Le dossier généré par Vue
-          branch: gh-pages # La branche où le site compilé sera envoyé
+          folder: dist # Le dossier que Vue génère (souvent 'dist')
+          branch: gh-pages # La branche de destination pour l'hébergement
