@@ -19,7 +19,7 @@ jobs:
       - name: Setup Node.js ⚙️
         uses: actions/setup-node@v4
         with:
-          node-version: '20' # Version récente de Node
+          # node-version: '20' # Version récente de Node
           cache: 'npm'       # Accélère les prochains builds en mettant en cache les modules
 
       - name: Install dependencies 🔧
