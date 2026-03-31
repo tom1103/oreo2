@@ -5,7 +5,7 @@ import Footer from './FooterView.vue'
 import { storageAvailable } from '@/utils/storage'
 
 // Constants
-const API_URL = 'https://8rkbcyrzde.execute-api.eu-west-1.amazonaws.com/api/'
+const API_URL = import.meta.env.VITE_API_URL
 const MAX_HISTORY = 5
 
 // Initialize items from localStorage if available
