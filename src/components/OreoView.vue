@@ -77,10 +77,11 @@ const debouncedFetch = debounce(async (searchValue) => {
         }
 
         const result = await response.json()
-        data.value = result
-
-        if (result.payload) {
+        if (result.result && result.result.designation) {
+            data.value = { payload: result.result.designation }
             addToHistory(searchValue)
+        } else {
+            data.value = { payload: '❌ Produit non trouvé' }
         }
     } catch (error) {
         console.error('Error:', error)
