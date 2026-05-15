@@ -8,16 +8,19 @@ import { debounce } from '@/utils/debounce'
 // Constants
 const API_URL = import.meta.env.VITE_API_URL
 const MAX_HISTORY = 5
+const IS_STORAGE_AVAILABLE = storageAvailable('localStorage')
 
 // Initialize items from localStorage if available
 let savedItems = []
-try {
-    const saved = localStorage.getItem('lastEntries')
-    if (saved) {
-        savedItems = JSON.parse(saved)
+if (IS_STORAGE_AVAILABLE) {
+    try {
+        const saved = localStorage.getItem('lastEntries')
+        if (saved) {
+            savedItems = JSON.parse(saved)
+        }
+    } catch (e) {
+        console.warn('Failed to load from localStorage:', e)
     }
-} catch (e) {
-    console.warn('Failed to load from localStorage:', e)
 }
 
 // Reactive references
@@ -32,7 +35,7 @@ const loading = ref(false)
 // Add to history function
 function addToHistory(entry) {
     // Check if localStorage is available
-    if (!storageAvailable('localStorage')) {
+    if (!IS_STORAGE_AVAILABLE) {
         console.warn('Local storage is not available.')
         return
     }
