@@ -3,10 +3,11 @@ import { ref } from 'vue'
 
 const nbClick = ref(0)
 const header = ref('header-default')
+const CLICK_THRESHOLD = 10
 
 function toggleHeader() {
     nbClick.value++
-    if (nbClick.value % parseInt('A', 20) === 0 && nbClick.value !== 0) {
+    if (nbClick.value % CLICK_THRESHOLD === 0 && nbClick.value !== 0) {
         header.value = header.value === 'header-default' ? 'header-alternate' : 'header-default'
     }
 }
