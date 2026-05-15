@@ -1,15 +1,9 @@
 <template>
-    <vue-particles id="tsparticles" :particlesLoaded="particlesLoaded" :options="options" />
+    <vue-particles id="tsparticles" :options="options" />
 </template>
 
 <script setup>
-import { ref } from 'vue'
-
-const particlesLoaded = (container) => {
-    console.log('Particles container loaded', container)
-}
-
-const options = ref({
+const options = {
     background: {
         color: {
             value: 'transparent',
@@ -58,7 +52,7 @@ const options = ref({
         },
     },
     detectRetina: true,
-})
+}
 </script>
 
 <style scoped>
