@@ -2,18 +2,12 @@
 import { ref, onMounted } from 'vue'
 import Oreo from './components/OreoView.vue'
 import SnowEffect from './components/SnowEffect.vue'
+import { isWinter } from '@/utils/winter.js'
 
 const showSnow = ref(false)
 
 onMounted(() => {
-    const today = new Date()
-    const month = today.getMonth() + 1 // getMonth() is zero-based
-    const day = today.getDate()
-
-    // Christmas period: from December 1 to February 15
-    const isWinter = (month === 12 && day >= 16) || month === 1 || (month === 3 && day <= 5)
-
-    if (isWinter) {
+    if (isWinter(new Date())) {
         showSnow.value = true
     }
 })
