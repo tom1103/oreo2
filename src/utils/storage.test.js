@@ -13,10 +13,10 @@ class MockDOMException extends Error {
 
 // Helper to set up mock window
 function setupMockWindow(storageMocks = {}) {
-    global.window = {
+    globalThis.window = {
         ...storageMocks,
     }
-    global.DOMException = MockDOMException
+    globalThis.DOMException = MockDOMException
 }
 
 test('storageAvailable returns true when storage is available and functional', () => {
@@ -45,7 +45,7 @@ test('storageAvailable returns false when storage is not supported', () => {
 })
 
 test('storageAvailable returns false when storage access throws SecurityError', () => {
-    global.window = {
+    globalThis.window = {
         get localStorage() {
             throw new Error('SecurityError')
         },
