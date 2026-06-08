@@ -5,22 +5,22 @@ import Footer from './FooterView.vue'
 import { storageAvailable } from '@/utils/storage'
 import { debounce } from '@/utils/debounce'
 
-// Constants
 const API_URL = import.meta.env.VITE_API_URL
 const MAX_HISTORY = 5
+const IS_STORAGE_AVAILABLE = storageAvailable('localStorage')
 
-// Initialize items from localStorage if available
 let savedItems = []
-try {
-    const saved = localStorage.getItem('lastEntries')
-    if (saved) {
-        savedItems = JSON.parse(saved)
+if (IS_STORAGE_AVAILABLE) {
+    try {
+        const saved = localStorage.getItem('lastEntries')
+        if (saved) {
+            savedItems = JSON.parse(saved)
+        }
+    } catch (e) {
+        console.warn('Failed to load from localStorage:', e)
     }
-} catch (e) {
-    console.warn('Failed to load from localStorage:', e)
 }
 
-// Reactive references
 const entry = ref('')
 const pn = ref('')
 const data = ref({ payload: '' })
@@ -29,20 +29,16 @@ const items = ref(savedItems)
 const copier = ref('Copier')
 const loading = ref(false)
 
-// Add to history function
 function addToHistory(entry) {
-    // Check if localStorage is available
-    if (!storageAvailable('localStorage')) {
+    if (!IS_STORAGE_AVAILABLE) {
         console.warn('Local storage is not available.')
         return
     }
 
-    // Update the reactive reference if entry is not already in the list
     if (!items.value.includes(entry)) {
         items.value = [entry, ...items.value.slice(0, MAX_HISTORY - 1)]
 
         try {
-            // Save updated list to localStorage
             localStorage.setItem('lastEntries', JSON.stringify(items.value))
         } catch (e) {
             console.warn('Failed to save to localStorage:', e)
@@ -50,7 +46,6 @@ function addToHistory(entry) {
     }
 }
 
-// Improved clipboard function
 function updateClipboard(newClip) {
     if (!newClip) return
 
@@ -67,7 +62,6 @@ function updateClipboard(newClip) {
         })
 }
 
-// Debounced API call
 const debouncedFetch = debounce(async (searchValue) => {
     try {
         const url = `${API_URL}${encodeURIComponent(searchValue)}`
@@ -77,10 +71,11 @@ const debouncedFetch = debounce(async (searchValue) => {
         }
 
         const result = await response.json()
-        data.value = result
-
-        if (result.payload) {
+        if (result.result && result.result.designation) {
+            data.value = { payload: result.result.designation }
             addToHistory(searchValue)
+        } else {
+            data.value = { payload: '❌ Produit non trouvé' }
         }
     } catch (error) {
         console.error('Error:', error)
@@ -92,7 +87,6 @@ const debouncedFetch = debounce(async (searchValue) => {
     }
 }, 500)
 
-// Watcher for entry changes
 watch(
     entry,
     (newVal) => {
@@ -110,7 +104,6 @@ watch(
             return
         }
 
-        // Normalize entry: remove spaces and uppercase
         const normalized = newVal.replace(/\s/g, '').toUpperCase()
         if (normalized !== newVal) {
             entry.value = normalized

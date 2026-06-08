@@ -12,7 +12,7 @@
     "preview": "vite preview",
     "lint": "eslint . --fix",
     "format": "prettier --write src/",
-    "test": "node --test src/utils/storage.test.js"
+    "test": "node --test src/utils/*.test.js"
   },
   "dependencies": {
     "@tsparticles/slim": "^3.9.1",
