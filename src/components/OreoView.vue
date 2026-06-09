@@ -5,7 +5,7 @@ import Footer from './FooterView.vue'
 import { storageAvailable } from '@/utils/storage'
 import { debounce } from '@/utils/debounce'
 
-const API_URL = import.meta.env.VITE_API_URL
+const API_URL = import.meta.env.VITE_API_URL || 'https://4qxrkjukz3.execute-api.eu-west-1.amazonaws.com/api/products/'
 const MAX_HISTORY = 5
 const IS_STORAGE_AVAILABLE = storageAvailable('localStorage')
 
